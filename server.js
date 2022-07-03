@@ -13,8 +13,8 @@ dotenv.config();
 app.use(express.json());
 
 // ------------------
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get('/api/v1', (req, res) => {
+  res.status(200).json({ msg: 'Hello World!' });
 });
 
 // ------------------ routers ------------------
