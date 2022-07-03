@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Wrapper from '../assets/wrappers/RegisterPage';
 import { Alert, FormRow, Logo } from '../components';
@@ -12,19 +13,29 @@ const initialState = {
 };
 
 const Register = () => {
-  const [user, setUser] = useState(initialState);
-  const { showAlert, displayAlert } = useAppContext();
+  const navigate = useNavigate();
+  const [credentials, setCredentials] = useState(initialState);
+  const { user, isLoading, showAlert, displayAlert, registerUser } =
+    useAppContext();
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    }
+  }, [user, navigate]);
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setUser({ ...user, [name]: value });
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const toggleMember = () => {
-    setUser({
-      ...user,
-      isMember: !user.isMember,
+    setCredentials({
+      ...credentials,
+      isMember: !credentials.isMember,
       name: '',
       email: '',
       password: '',
@@ -33,8 +44,16 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!user.email || !user.password || (!user.name && !user.isMember)) {
+    const { email, password, name, isMember } = credentials;
+    if (!email || !password || (!name && !isMember)) {
       displayAlert();
+      return;
+    }
+    const currentUser = { email, password, name };
+    if (isMember) {
+      console.log('Already a member!');
+    } else {
+      registerUser(currentUser);
     }
   };
 
@@ -42,15 +61,15 @@ const Register = () => {
     <Wrapper className="full-page">
       <form className="form" onSubmit={handleSubmit}>
         <Logo />
-        <h3>{user.isMember ? 'login' : 'register'} </h3>
+        <h3>{credentials.isMember ? 'login' : 'register'} </h3>
         {/* alert */}
         {showAlert && <Alert />}
         {/* name input */}
-        {!user.isMember && (
+        {!credentials.isMember && (
           <FormRow
             type="text"
             name="name"
-            value={user.name}
+            value={credentials.name}
             handleChange={handleChange}
           />
         )}
@@ -58,21 +77,23 @@ const Register = () => {
         <FormRow
           type="email"
           name="email"
-          value={user.email}
+          value={credentials.email}
           handleChange={handleChange}
         />
         {/* password input */}
         <FormRow
           type="password"
           name="password"
-          value={user.password}
+          value={credentials.password}
           handleChange={handleChange}
         />
-        <button className="btn btn-block">Submit</button>
+        <button className="btn btn-block" disabled={isLoading}>
+          Submit
+        </button>
         <p>
-          {user.isMember ? 'Not a member yet?' : 'Already a member?'}
+          {credentials.isMember ? 'Not a member yet?' : 'Already a member?'}
           <button type="button" className="member-btn" onClick={toggleMember}>
-            {user.isMember ? 'Register' : 'Login'}
+            {credentials.isMember ? 'Register' : 'Login'}
           </button>
         </p>
       </form>

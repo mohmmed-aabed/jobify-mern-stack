@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
 
 import connectDB from './db/connect.js';
 import authRouter from './routes/authRoutes.js';
@@ -10,6 +11,9 @@ import errorHandlerMiddleware from './middleware/error-handler.js';
 
 const app = express();
 dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
 app.use(express.json());
 
 // ------------------
