@@ -1,9 +1,12 @@
+import { initialState } from './appContext';
 import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
   SETUP_USER_ERROR,
+  TOGGLE_SIDEBAR,
+  LOGOUT_USER,
 } from './actions';
 
 const reducer = (state, action) => {
@@ -50,6 +53,21 @@ const reducer = (state, action) => {
       isLoading: false,
       alertText: action.payload.msg,
       alertType: 'danger',
+    };
+  }
+  if (action.type === TOGGLE_SIDEBAR) {
+    return {
+      ...state,
+      showSidebar: !state.showSidebar,
+    };
+  }
+  if (action.type === LOGOUT_USER) {
+    return {
+      ...initialState,
+      user: null,
+      token: null,
+      userLocation: '',
+      jobLocation: '',
     };
   }
   throw new Error(`No such action: ${action.type}`);

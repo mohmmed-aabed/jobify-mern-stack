@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Error, Landing, ProtectedRoute, Register } from './pages';
 import {
-  AddJobs,
+  AddJob,
   AllJobs,
   Profile,
   SharedLayout,
@@ -21,7 +21,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="add-jobs" element={<AddJobs />} />
+          <Route path="add-job" element={<AddJob />} />
           <Route path="all-jobs" element={<AllJobs />} />
           <Route path="profile" element={<Profile />} />
           <Route index element={<Stats />} />
