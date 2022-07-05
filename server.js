@@ -8,6 +8,7 @@ import jobsRouter from './routes/jobsRoutes.js';
 
 import notFoundMiddleware from './middleware/not-found.js';
 import errorHandlerMiddleware from './middleware/error-handler.js';
+import authenticateMiddleware from './middleware/authenticate.js';
 
 const app = express();
 dotenv.config();
@@ -23,7 +24,7 @@ app.get('/api/v1', (req, res) => {
 
 // ------------------ routers ------------------
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/jobs', jobsRouter);
+app.use('/api/v1/jobs', authenticateMiddleware, jobsRouter);
 
 // ------------------ middleware ------------------
 app.use(notFoundMiddleware);
