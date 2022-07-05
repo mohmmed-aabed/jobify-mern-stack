@@ -88,8 +88,8 @@ const Register = () => {
           value={credentials.password}
           handleChange={handleChange}
         />
-        <button className="btn btn-block" disabled={isLoading}>
-          Submit
+        <button type="submit" className="btn btn-block" disabled={isLoading}>
+          {isLoading ? 'Please wait...' : 'submit'}
         </button>
         <p>
           {credentials.isMember ? 'Not a member yet?' : 'Already a member?'}
