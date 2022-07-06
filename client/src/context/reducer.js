@@ -15,6 +15,8 @@ import {
   CREATE_JOB_BEGIN,
   CREATE_JOB_SUCCESS,
   CREATE_JOB_ERROR,
+  GET_JOBS_BEGIN,
+  GET_JOBS_SUCCESS,
 } from './actions';
 
 const reducer = (state, action) => {
@@ -140,6 +142,18 @@ const reducer = (state, action) => {
       isLoading: false,
       alertText: action.payload.msg,
       alertType: 'danger',
+    };
+  }
+  if (action.type === GET_JOBS_BEGIN) {
+    return { ...state, isLoading: true, showAlert: false };
+  }
+  if (action.type === GET_JOBS_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      jobs: action.payload.jobs,
+      totalJobs: action.payload.totalJobs,
+      numberOfPages: action.payload.numberOfPages,
     };
   }
   throw new Error(`No such action: ${action.type}`);

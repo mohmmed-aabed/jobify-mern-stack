@@ -5,5 +5,17 @@ import Logo from './Logo';
 import Navbar from './Navbar';
 import SmallSidebar from './SmallSidebar';
 import NavLinks from './NavLinks';
+import SearchContainer from './SearchContainer';
+import JobsContainer from './JobsContainer';
 
-export { Alert, BigSidebar, FormRow, Logo, Navbar, SmallSidebar, NavLinks };
+export {
+  Alert,
+  BigSidebar,
+  FormRow,
+  Logo,
+  Navbar,
+  SmallSidebar,
+  NavLinks,
+  SearchContainer,
+  JobsContainer,
+};
