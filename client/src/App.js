@@ -1,13 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Error, Landing, ProtectedRoute, Register } from './pages';
-import {
-  AddJob,
-  AllJobs,
-  Profile,
-  SharedLayout,
-  Stats,
-} from './pages/Dashboard';
+import { AddJob, AllJobs, Profile, SharedLayout } from './pages/Dashboard';
 
 function App() {
   return (
@@ -22,9 +16,8 @@ function App() {
           }
         >
           <Route path="add-job" element={<AddJob />} />
-          <Route path="all-jobs" element={<AllJobs />} />
           <Route path="profile" element={<Profile />} />
-          <Route index element={<Stats />} />
+          <Route index element={<AllJobs />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/landing" element={<Landing />} />

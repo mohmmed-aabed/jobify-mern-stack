@@ -72,8 +72,4 @@ const updateJob = async (req, res, next) => {
   }
 };
 
-const showStats = async (req, res) => {
-  res.send('show stats');
-};
-
-export { createJob, deleteJob, getAllJobs, updateJob, showStats };
+export { createJob, deleteJob, getAllJobs, updateJob };

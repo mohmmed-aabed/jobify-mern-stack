@@ -5,7 +5,6 @@ import Logo from './Logo';
 import Navbar from './Navbar';
 import SmallSidebar from './SmallSidebar';
 import NavLinks from './NavLinks';
-import SearchContainer from './SearchContainer';
 import JobsContainer from './JobsContainer';
 
 export {
@@ -16,6 +15,5 @@ export {
   Navbar,
   SmallSidebar,
   NavLinks,
-  SearchContainer,
   JobsContainer,
 };
