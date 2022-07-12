@@ -17,6 +17,11 @@ import {
   CREATE_JOB_ERROR,
   GET_JOBS_BEGIN,
   GET_JOBS_SUCCESS,
+  SET_EDIT_JOB,
+  DELETE_JOB_BEGIN,
+  EDIT_JOB_BEGIN,
+  EDIT_JOB_SUCCESS,
+  EDIT_JOB_ERROR,
 } from './actions';
 
 const reducer = (state, action) => {
@@ -156,6 +161,48 @@ const reducer = (state, action) => {
       numberOfPages: action.payload.numberOfPages,
     };
   }
+  if (action.type === SET_EDIT_JOB) {
+    const job = state.jobs.find((job) => job._id === action.payload);
+    const { _id, position, company, jobType, jobLocation, status } = job;
+    return {
+      ...state,
+      isEditing: true,
+      editJobId: _id,
+      position,
+      company,
+      jobType,
+      jobLocation,
+      status,
+    };
+  }
+  if (action.type === DELETE_JOB_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === EDIT_JOB_BEGIN) {
+    return { ...state, isLoading: true };
+  }
+
+  if (action.type === EDIT_JOB_SUCCESS) {
+    return {
+      ...state,
+      isLoading: false,
+      showAlert: true,
+      alertText: 'Job updated!',
+      alertType: 'success',
+    };
+  }
+
+  if (action.type === EDIT_JOB_ERROR) {
+    return {
+      ...state,
+      showAlert: true,
+      isLoading: false,
+      alertText: action.payload.msg,
+      alertType: 'danger',
+    };
+  }
+
   throw new Error(`No such action: ${action.type}`);
 };
 

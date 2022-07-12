@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import Job from '../models/Job.js';
 import CustomError from '../errors/custom-error.js';
+import checkPermissions from '../utils/checkPermissions.js';
 
 const createJob = async (req, res, next) => {
   try {
@@ -20,8 +21,19 @@ const createJob = async (req, res, next) => {
   }
 };
 
-const deleteJob = async (req, res) => {
-  res.send('delete job');
+const deleteJob = async (req, res, next) => {
+  try {
+    const { id: jobId } = req.params;
+    const job = await Job.findOne({ _id: jobId });
+    if (!job) {
+      throw new CustomError(`No job with id: ${jobId}`, StatusCodes.NOT_FOUND);
+    }
+    checkPermissions(req.user.userId, job.createdBy);
+    await job.remove();
+    res.status(StatusCodes.OK).json({ msg: 'Job removed successfully!' });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getAllJobs = async (req, res, next) => {
@@ -35,8 +47,29 @@ const getAllJobs = async (req, res, next) => {
   }
 };
 
-const updateJob = async (req, res) => {
-  res.send('update job');
+const updateJob = async (req, res, next) => {
+  try {
+    const { id: jobId } = req.params;
+    const { company, position } = req.body;
+    if (!position || !company) {
+      throw new CustomError(
+        'Please provide all values!',
+        StatusCodes.BAD_REQUEST
+      );
+    }
+    const job = await Job.findOne({ _id: jobId });
+    if (!job) {
+      throw new CustomError(`No job with id: ${jobId}`, StatusCodes.NOT_FOUND);
+    }
+    checkPermissions(req.user.userId, job.createdBy);
+    const updatedJob = await Job.findByIdAndUpdate({ _id: jobId }, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(StatusCodes.OK).json({ updatedJob });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const showStats = async (req, res) => {
